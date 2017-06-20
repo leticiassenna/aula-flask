@@ -3,7 +3,7 @@ from flask_login import login_user, logout_user
 from app import app, db, lm
 
 from app.models.tables import User
-from app.models.forms import LoginForm
+from app.models.forms import LoginForm, CadastroForm
 
 @lm.user_loader
 def load_user(id):
@@ -33,3 +33,25 @@ def logout():
 	logout_user()
 	flash("Logged out!")
 	return redirect(url_for("index"))
+
+
+@app.route("/cadastro", methods=["GET", "POST"])
+def cadastro():
+    form = CadastroForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user and user.username == form.username.data:
+                flash("User already used!")
+                return redirect(url_for("cadastro"))
+        else:
+            user = User.query.filter_by(email=form.email.data).first()
+            if user and user.email == form.email.data:
+                flash("Email already used!")
+                return redirect(url_for("cadastro"))
+            else:
+                new_user = User(form.username.data, form.password.data, form.name.data, form.email.data)
+                flash("Registered with success!")
+    	db.session.add(new_user)
+    	db.session.commit()
+
+    return render_template('cadastro.html', form=form)
