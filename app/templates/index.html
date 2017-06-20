@@ -7,7 +7,11 @@
       <div class="jumbotron">
         <h1>Bem-vindo ao Toilter!</h1>
         <p class="lead">Aplicação do curso de Flask</p>
-        <p><a class="btn btn-lg btn-success" href="{{ url_for('login') }}" role="button">Sign up today</a></p>
+        {% if current_user.is_authenticated %}
+          <p><a class="btn btn-lg btn-success" href="https://docs.google.com/document/d/1bxHpdQPit1GfXjyBHeravqfnsM788sKGF8cZN1hdYR0/edit?usp=sharing" role="button">Tutorial</a></p>
+        {% else %}
+          <p><a class="btn btn-lg btn-success" href="{{ url_for('login') }}" role="button">Sign up today</a></p>
+        {% endif %}
       </div>
 
       <div class="row marketing">
