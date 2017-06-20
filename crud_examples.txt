@@ -1,0 +1,32 @@
+@app.route("/create/<info>")
+@app.route("/create", defaults={"info": None})
+def create(info):
+	i = User("leticiassenna", "1234", "Leticia Senna",
+	"leticia0senna@gmail.com").all()
+	db.session.add(i)
+	db.session.commit
+	return "OK"
+
+@app.route("/select/<info>")
+@app.route("/select", defaults={"info": None})
+def select(info):
+	r = User.query.filter_by(password="1234").all()
+	print(r)
+	return "OK"
+
+@app.route("/alter/<info>")
+@app.route("/alter", defaults={"info": None})
+def alter(info):
+	r = User.query.filter_by(username="leonardosenna").first()
+	r.name = "Leonardo SS"
+	db.session.add(r)
+	db.session.commit()
+	return "OK"
+
+@app.route("/delete/<info>")
+@app.route("/delete", defaults={"info": None})
+def delete(info):
+	r = User.query.filter_by(username="leticiasenna").first()
+	db.session.delete(r)
+	db.session.commit()
+	return "OK"
